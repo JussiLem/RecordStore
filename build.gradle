@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'war'
 }
 
 group 'RecordStore'
@@ -7,16 +7,45 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    //enable compilation in a separate daemon process
+    options.fork = true
+}
+
+
 repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+    jvmArgs '-XX:MaxPermSize=256m'
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    failFast = true
+
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
+}
+
+
 dependencies {
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.25.2'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.197'
     implementation group: 'org.apache.taglibs', name: 'taglibs-standard-impl', version: '1.2.5'
     implementation group: 'org.apache.taglibs', name: 'taglibs-standard-spec', version: '1.2.5'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
 
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.1'
+
 }
+
+defaultTasks 'test', 'compileJava'
