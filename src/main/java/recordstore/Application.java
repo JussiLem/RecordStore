@@ -26,9 +26,10 @@ public class Application {
      * Program entry point.
      *
      * @param args command line args.
-     * @throws Exception if any error occurs.
+     * @throws Exception jos virheitä.
      */
     public static void main(final String[] args) throws Exception {
+
         final ArtistDao inMemoryDao = new InMemoryArtistDao();
         performOperationsUsing(inMemoryDao);
 
@@ -61,7 +62,7 @@ public class Application {
         return dataSource;
     }
 
-  private static void performOperationsUsing(final ArtistDao artistDao) throws Exception {
+  private static void performOperationsUsing(final ArtistDao artistDao) throws SQLException {
         addArtists(artistDao);
       LOGGER.info("artistDao.getAllArtists(): ");
       try (Stream<Artist> artistStream = artistDao.getAll()) {
@@ -81,12 +82,17 @@ public class Application {
       LOGGER.info("customerDao.getAllCustomers(): " + artistDao.getAll());
   }
 
-  private static void addArtists(ArtistDao artistDao) throws Exception {
+  private static void addArtists(ArtistDao artistDao) throws SQLException {
       for (Artist customer : generateSampleArtists()) {
           artistDao.add(customer);
       }
   }
 
+    /**
+     * Luo artisteja.
+     *
+     * @return lista artisteja.
+     */
   private static List<Artist> generateSampleArtists() {
        final Artist artist1 = new Artist(1, "Bob Marley");
        final Artist artist2 = new Artist(2, "Elton John");

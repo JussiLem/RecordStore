@@ -2,9 +2,8 @@ package recordstore.exception;
 
 public class RecordStoreException extends RuntimeException {
 
-  public RecordStoreException() {
-    super();
-  }
+  private static final long serialVersionUID = 1L;
+
 
   public RecordStoreException(final String message, final Throwable cause) {
     super(message, cause);

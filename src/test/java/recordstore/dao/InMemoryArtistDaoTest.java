@@ -11,6 +11,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+/**
+ * Testaa {@link InMemoryArtistDao}.
+ */
 class InMemoryArtistDaoTest {
 
   private InMemoryArtistDao dao;
@@ -22,6 +25,9 @@ class InMemoryArtistDaoTest {
     assertTrue(dao.add(ARTIST));
   }
 
+  /**
+   * Esittää skenaariota, jossa dao operaatioita tehdään ei-olemassa olevalle artistille.
+   */
   @Nested
   class NonExistingArtist {
 
@@ -65,6 +71,9 @@ class InMemoryArtistDaoTest {
     }
   }
 
+  /**
+   * Esittää skenaariota, jossa dao operaatiota tehdään jo olemassa olevalle artistille.
+   */
   @Nested
   class ExistingArtist {
 

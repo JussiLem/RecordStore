@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@DisplayName("Writing assertions for objects")
+/**
+ * Testaa {@link Artist}.
+ */
+@DisplayName("Writing assertions for Artist")
 class ArtistTest {
     private static Artist artist;
     private static final int ID = 1;
@@ -42,6 +45,7 @@ class ArtistTest {
         assertNotEquals(artist.hashCode(), otherArtist.hashCode());
     }
     @Test
+    @DisplayName("Equals with the same object values")
     void equalsWithSameObjectValues() {
         final Artist otherArtist = new Artist(ID, NAME);
         assertEquals(artist, otherArtist);
@@ -49,11 +53,13 @@ class ArtistTest {
     }
 
     @Test
+    @DisplayName("Equals with the same objects")
     void equalsWithSameObjects() {
         assertEquals(artist, artist);
         assertEquals(artist.hashCode(), artist.hashCode());
     }
     @Test
+    @DisplayName("Test to string")
     void testToString() {
         assertEquals(String.format("Artist{id=%s, name='%s'}",
                 artist.getId(), artist.getName()), artist.toString());

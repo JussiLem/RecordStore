@@ -2,7 +2,6 @@
 build/
 .idea
 out
-.sqlite
 # Ignore Gradle GUI config
 gradle-app.setting
 

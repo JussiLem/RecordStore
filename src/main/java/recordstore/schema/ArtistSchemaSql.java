@@ -1,5 +1,8 @@
 package recordstore.schema;
 
+/**
+ * Artist Schema SQL Class
+ */
 public class ArtistSchemaSql {
 
   private ArtistSchemaSql() {}

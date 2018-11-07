@@ -1,13 +1,17 @@
 package recordstore.data;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * Artisti POJO edustaa tietoja, jotka luetaan kannasta.
+ *
+ */
 public class Artist {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Artist.class);
+
     private int id;
     private String name;
 
+    /**
+     * Luo instanssin artistista
+     */
     public Artist(final int id, final String name) {
         this.id = id;
         this.name = name;
@@ -17,7 +21,7 @@ public class Artist {
         return id;
     }
 
-    public void setId(final int id) {
+    void setId(final int id) {
         this.id = id;
     }
 

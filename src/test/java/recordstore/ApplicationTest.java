@@ -1,8 +1,10 @@
 package recordstore;
 
-
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testaa että sovellus käynnistyy ilman virheitä
+ */
 class ApplicationTest {
 
     @Test

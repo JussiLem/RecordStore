@@ -13,7 +13,6 @@ tasks.withType(JavaCompile) {
     options.fork = true
 }
 
-
 repositories {
     mavenCentral()
 }
@@ -23,7 +22,6 @@ test {
     testLogging.showStandardStreams = true
     minHeapSize = "128m"
     maxHeapSize = "512m"
-    jvmArgs '-XX:MaxPermSize=256m'
     beforeTest { descriptor ->
         logger.lifecycle("Running test: " + descriptor)
     }
@@ -37,15 +35,12 @@ test {
 
 dependencies {
     implementation group: 'com.h2database', name: 'h2', version: '1.4.197'
-    implementation group: 'org.apache.taglibs', name: 'taglibs-standard-impl', version: '1.2.5'
-    implementation group: 'org.apache.taglibs', name: 'taglibs-standard-spec', version: '1.2.5'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-
-
+    
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.1'
 
 }
 
-defaultTasks 'test', 'compileJava'
+defaultTasks 'clean', 'test', 'war'

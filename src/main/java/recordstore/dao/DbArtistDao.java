@@ -18,14 +18,29 @@ import java.util.stream.StreamSupport;
 
 import javax.sql.DataSource;
 
+/**
+ * An implementation of {@link ArtistDao} that persists artists in RDBMS.
+ *
+ */
 public class DbArtistDao implements ArtistDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
     private final DataSource dataSource;
 
+    /**
+     * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>dataSource</code>
+     * säilömiseen ja artistin tietojen hakemiseen
+     *
+     * @param dataSource a non-null dataSource.
+     */
     public DbArtistDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * @return a lazily populated stream of artists. Note the stream returned must be closed to
+     *     free all the acquired resources. The stream keeps an open connection to the database till
+     *     it is complete or is closed manually.
+     */
     @Override
     public Stream<Artist> getAll() {
         Connection connection;
@@ -72,6 +87,10 @@ public class DbArtistDao implements ArtistDao {
         return new Artist(resultSet.getInt("ID"),
                 resultSet.getString("name"));
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Artist> getById(int id) throws SQLException {
         ResultSet resultSet = null;
@@ -97,6 +116,9 @@ public class DbArtistDao implements ArtistDao {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(Artist artist) throws SQLException {
         if (getById(artist.getId()).isPresent()) {
@@ -116,6 +138,9 @@ public class DbArtistDao implements ArtistDao {
         }
 
     }
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public boolean update(Artist artist)  {
@@ -132,6 +157,9 @@ public class DbArtistDao implements ArtistDao {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean delete(Artist artist) {
         try (Connection connection = getConnection();
