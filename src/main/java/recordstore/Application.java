@@ -68,18 +68,18 @@ public class Application {
       try (Stream<Artist> artistStream = artistDao.getAll()) {
           artistStream.forEach(artist -> LOGGER.info(String.valueOf(artist)));
       }
-      LOGGER.info("artistDao.getArtistById(2): " + artistDao.getById(2));
+      LOGGER.info("artistDao.getArtistById(2): {}" + artistDao.getById(2));
       final Artist artist = new Artist(4, "Kid Rock");
       artistDao.add(artist);
-      LOGGER.info("artistDao.getAllArtists(): " + artistDao.getAll());
+      LOGGER.info("artistDao.getAllArtists(): {}" + artistDao.getAll());
       artist.setName("Robert James Ritchie");
       artistDao.update(artist);
-      LOGGER.info("customerDao.getAllCustomers(): ");
+      LOGGER.info("artistDao.getAllArtists(): ");
       try (Stream<Artist> artistStream = artistDao.getAll()) {
           artistStream.forEach((art) -> LOGGER.info(String.valueOf(art)));
       }
       artistDao.delete(artist);
-      LOGGER.info("customerDao.getAllCustomers(): " + artistDao.getAll());
+      LOGGER.info("artistDao.getAllArtists: {}" + artistDao.getAll());
   }
 
   private static void addArtists(ArtistDao artistDao) throws SQLException {
