@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Record vault</title>
+    <title>Record Store</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login_style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Bitter" rel="stylesheet">
 </head>
 <body>
@@ -20,11 +20,11 @@
 
     <div id="credits-text">By Jussi Lemmetyinen</div>
 </div>
-
+<!--  Jquery -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     // Focus login kenttään
-    setTimeout(function () {
-        $("#<%=LoginServlet.PARAM_LOGIN%>").focus().select();
+    setTimeout(function () {$("#<%=LoginServlet.PARAM_LOGIN%>").focus().select();
     }, 1);
 
 </script>
