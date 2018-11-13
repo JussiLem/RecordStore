@@ -1,0 +1,8 @@
+version: "3"
+services:
+  recordstore:
+    image: tomcat
+    build: '.'
+    stdin_open: true
+    ports:
+      - 8080:8080
