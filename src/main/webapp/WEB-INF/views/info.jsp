@@ -1,4 +1,4 @@
-<%@ page import="recordstore.data.User" %>
+<%@ page import="recordstore.data.Artist" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,9 +11,9 @@
 <body>
 <div id="user-info">
     <%
-        User user = (User) session.getAttribute("name");
+        Artist artist = (Artist) session.getAttribute("name");
     %>
-    <div id="welcome-text">Welcome <%= user.getName()%></div>
+    <div id="welcome-text">Welcome <%= artist.getName()%></div>
 
 </div>
 </body>
