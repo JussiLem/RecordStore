@@ -16,24 +16,22 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.sql.DataSource;
-
 /**
  * An implementation of {@link ArtistDao} that persists artists in RDBMS.
  *
  */
 public class DbArtistDao implements ArtistDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
-    private final DataSource dataSource;
+    private final Connection conn;
 
     /**
-     * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>dataSource</code>
+     * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code>
      * säilömiseen ja artistin tietojen hakemiseen
      *
-     * @param dataSource a non-null dataSource.
+     * @param conn a non-null conn.
      */
-    public DbArtistDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public DbArtistDao(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -70,7 +68,7 @@ public class DbArtistDao implements ArtistDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return conn;
     }
 
     private void mutedClose(Connection connection, PreparedStatement statement, ResultSet resultSet) {
@@ -79,7 +77,7 @@ public class DbArtistDao implements ArtistDao {
             statement.close();
             connection.close();
         } catch (SQLException e) {
-            LOGGER.info("Poikkeus heitetty " + e.getMessage());
+            LOGGER.info("SQL ERROR {}", e.getMessage());
         }
     }
 
@@ -127,8 +125,7 @@ public class DbArtistDao implements ArtistDao {
 
         try(
             Connection connection = getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("INSERT INTO ARTISTS VALUES (?,?)")) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO ARTISTS VALUES (?,?)")) {
             statement.setLong(1, artist.getId());
             statement.setString(2, artist.getName());
             statement.execute();
