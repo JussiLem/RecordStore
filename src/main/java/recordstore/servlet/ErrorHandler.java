@@ -15,7 +15,7 @@ import static javax.servlet.RequestDispatcher.*;
 public class ErrorHandler extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         resp.setContentType("text/html; charset=utf-8");
         try (PrintWriter writer = resp.getWriter()) {
@@ -27,6 +27,7 @@ public class ErrorHandler extends HttpServlet {
                             writer.write("<li>" + e + ":" + req.getAttribute(e) + " </li>")
                     );
             writer.write("</ul>");
+      writer.write("<a href=\"./\">Go back home</a>");
             writer.write("</html></body>");
         }
 
