@@ -27,7 +27,7 @@ public class ErrorHandler extends HttpServlet {
                             writer.write("<li>" + e + ":" + req.getAttribute(e) + " </li>")
                     );
             writer.write("</ul>");
-      writer.write("<a href=\"./\">Go back home</a>");
+      writer.write("<a href=./artists>Go back home</a>");
             writer.write("</html></body>");
         }
 
