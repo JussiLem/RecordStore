@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -16,6 +15,7 @@
 
 <div id="wrapper">
     <form action="artists" method="post">
+        <input id="artist-id" type="number" placeholder="Enter Artist Id" min="1" maxlength="40" name="number" autofocus autocomplete="off" required>
         <input id="login-field" type="text" placeholder="Enter Artist Name" maxlength="40" name="name" autofocus autocomplete="off" required>
         <button id="login-button" type="submit">Submit</button>
     </form>
