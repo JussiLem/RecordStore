@@ -1,0 +1,6 @@
+SET SCHEMA "PUBLIC";
+CREATE TABLE ARTISTS
+(
+  ID   INT not null,
+  NAME VARCHAR(100) not null
+);
