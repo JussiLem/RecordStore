@@ -9,12 +9,8 @@ gradlew
 ````
 
 To run the project you can either
-1. Use Gretty by typing
-````bash
-gradlew appRun
-````
- 
-2. Or use docker by typing
+
+1. Run on docker
 ````bash
 docker-compose up
 ````
