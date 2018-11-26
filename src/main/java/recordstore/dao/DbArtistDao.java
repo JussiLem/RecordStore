@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,16 +23,16 @@ import java.util.stream.StreamSupport;
  */
 public class DbArtistDao implements ArtistDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
-    private final Connection conn;
+    private final DataSource dataSource;
 
     /**
      * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code>
      * säilömiseen ja artistin tietojen hakemiseen
      *
-     * @param conn a non-null conn.
+     * @param dataSource ei-null yhteys.
      */
-    public DbArtistDao(Connection conn) {
-        this.conn = conn;
+    public DbArtistDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     /**
@@ -68,7 +69,7 @@ public class DbArtistDao implements ArtistDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return conn;
+        return dataSource.getConnection();
     }
 
     private void mutedClose(Connection connection, PreparedStatement statement, ResultSet resultSet) {

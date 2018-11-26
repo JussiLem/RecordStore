@@ -1,11 +1,21 @@
 package recordstore.data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Artisti POJO edustaa tietoja, jotka luetaan kannasta.
  *
  */
+
+@Entity
+@Table(name = "ARTISTS")
 public class Artist {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
 
@@ -46,7 +56,7 @@ public class Artist {
         boolean isEqual = false;
         if (this == o) {
             isEqual = true;
-        } else if (o != null && getClass() == o.getClass()) {
+        } else if (o instanceof Artist) {
             final Artist artist = (Artist) o;
             if (getId() == artist.getId()) {
                 isEqual = true;

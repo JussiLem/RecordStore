@@ -1,9 +1,9 @@
 package recordstore;
 
-import org.h2.jdbcx.JdbcDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.dao.ArtistDao;
+import recordstore.dao.DbArtistDao;
 import recordstore.dao.InMemoryArtistDao;
 import recordstore.data.Artist;
 import recordstore.schema.ArtistSchemaSql;
@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 
 public class Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
-    private static final String URL = "jdbc:h2:~/dao";
 
     /**
      * Program entry point for testing.
@@ -27,14 +26,14 @@ public class Application {
      */
     public static void main(final String[] args) throws SQLException {
 
-        final ArtistDao inMemoryDao = new InMemoryArtistDao();
-        performOperationsUsing(inMemoryDao);
+     //   final ArtistDao inMemoryDao = new InMemoryArtistDao();
+     //   performOperationsUsing(inMemoryDao);
 
-        final DataSource dataSource = createDataSource();
-        createSchema(dataSource);
-       // final ArtistDao dbDao = new DbArtistDao(dataSource);
-      //  performOperationsUsing(dbDao);
-        //deleteSchema(dataSource);
+     //   final DataSource dataSource = createDataSource();
+     //   createSchema(dataSource);
+     //  final ArtistDao dbDao = new DbArtistDao(dataSource);
+     //   performOperationsUsing(dbDao);
+      //  deleteSchema(dataSource);
 
   }
 
@@ -52,12 +51,13 @@ public class Application {
         }
     }
 
-
+/*
     private static DataSource createDataSource() {
         JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL(URL);
+        dataSource.setURL(URL_PATTERN);
         return dataSource;
     }
+    */
 
   private static void performOperationsUsing(final ArtistDao artistDao) throws SQLException {
         addArtists(artistDao);

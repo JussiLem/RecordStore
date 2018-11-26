@@ -1,6 +1,1 @@
-SET SCHEMA "PUBLIC";
-CREATE TABLE ARTISTS
-(
-  ID   INT not null,
-  NAME VARCHAR(100) not null
-);
+CREATE TABLE ARTISTS (ID INT COMMENT 'artisti id' , NAME VARCHAR(100) COMMENT 'artistin nimi');

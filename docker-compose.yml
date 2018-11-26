@@ -7,3 +7,10 @@ services:
     ports:
       - 8080:8080
       - 5005:5005
+  recordstoredb:
+    image: mariadb
+    build: './mariadb/'
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
