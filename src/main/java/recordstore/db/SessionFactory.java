@@ -23,7 +23,7 @@ public class SessionFactory {
     private static final String JDBC_URL_PATTERN = "jdbc:mariadb://recordstoredb:3306/records";
     private static final String host = config.getString("host");
     private static final String DbUser = config.getString("user");
-    private static final String DbPass = config.getString("password");
+    public static final String DbPass = config.getString("password");
 
 
     private static DataSource createDataSource() {

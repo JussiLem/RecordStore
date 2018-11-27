@@ -17,6 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
+import static recordstore.db.SessionFactory.DbPass;
+
 @WebServlet(name = "ArtistServlet", urlPatterns = "/artists")
 public class ArtistServlet extends HttpServlet {
   private static final Logger LOGGER = LoggerFactory.getLogger(ArtistServlet.class);
@@ -28,6 +30,7 @@ public class ArtistServlet extends HttpServlet {
   private static DataSource createDataSource() {
     HikariDataSource dataSource = new HikariDataSource();
     dataSource.setJdbcUrl(JDBC_URL_PATTERN);
+    dataSource.setPassword(DbPass);
     return dataSource;
   }
 
