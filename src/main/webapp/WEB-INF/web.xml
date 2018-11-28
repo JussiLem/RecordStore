@@ -6,11 +6,11 @@
         version="4.0">
     <error-page>
         <error-code>404</error-code>
-        <location>/ErrorHandler</location> <!-- /src/main/webapp/error-404.html-->
+        <location>/error-404.html</location> <!-- /src/main/webapp/error-404.html-->
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/ErrorHandler</location> <!-- /src/main/webapp/error-404.html-->
+        <location>/error-404.html</location> <!-- /src/main/webapp/error-404.html-->
     </error-page>
     <error-page>
         <exception-type>java.io.IOException</exception-type>
@@ -18,6 +18,10 @@
     </error-page>
     <error-page>
         <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/ErrorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>recordstore.exception.RecordStoreException</exception-type>
         <location>/ErrorHandler</location>
     </error-page>
 </web-app>
