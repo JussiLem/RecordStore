@@ -83,8 +83,7 @@ public class DbArtistDao implements ArtistDao {
     }
 
     private Artist createArtist(ResultSet resultSet) throws SQLException {
-        return new Artist(resultSet.getInt("ID"),
-                resultSet.getString("name"));
+        return new Artist(resultSet.getString("name"));
     }
 
     /**
@@ -96,7 +95,7 @@ public class DbArtistDao implements ArtistDao {
 
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE ID = ?")) {
+                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE id = ?")) {
 
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
@@ -145,7 +144,7 @@ public class DbArtistDao implements ArtistDao {
         try(
             Connection connection = getConnection();
             PreparedStatement statement =
-                    connection.prepareStatement("UPDATE ARTISTS SET NAME = ? WHERE ID = ?")) {
+                    connection.prepareStatement("UPDATE ARTISTS SET name = ? WHERE id = ?")) {
                 statement.setString(1, artist.getName());
                 statement.setLong(2, artist.getId());
                 return statement.executeUpdate() > 0;
@@ -162,7 +161,7 @@ public class DbArtistDao implements ArtistDao {
     public boolean delete(Artist artist) {
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM ARTISTS WHERE ID = ?")) {
+                     connection.prepareStatement("DELETE FROM ARTISTS WHERE id = ?")) {
             statement.setLong(1, artist.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException ex) {

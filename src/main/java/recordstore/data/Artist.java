@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Artisti POJO edustaa tietoja, jotka luetaan kannasta.
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Table(name = "ARTISTS")
 public class Artist {
 
+    private static final AtomicInteger count = new AtomicInteger(0);
     @Id
     @GeneratedValue
     private int id;
@@ -22,9 +24,10 @@ public class Artist {
     /**
      * Luo instanssin artistista
      */
-    public Artist(final int id, final String name) {
-        this.id = id;
+    public Artist(final String name) {
         this.name = name;
+        boolean isFilled = false;
+        id = count.incrementAndGet();
     }
 
     public int getId() {

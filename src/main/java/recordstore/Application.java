@@ -66,7 +66,7 @@ public class Application {
           artistStream.forEach(artist -> LOGGER.info(String.valueOf(artist)));
       }
       LOGGER.info("artistDao.getArtistById(2): {}", artistDao.getById(2));
-      final Artist artist = new Artist(4, "Kid Rock");
+      final Artist artist = new Artist("Kid Rock");
       artistDao.add(artist);
       LOGGER.info("artistDao.getAllArtists(): {}", artistDao.getAll());
       artist.setName("Robert James Ritchie");
@@ -91,9 +91,9 @@ public class Application {
      * @return lista artisteja.
      */
   private static List<Artist> generateSampleArtists() {
-       final Artist artist1 = new Artist(1, "Bob Marley");
-       final Artist artist2 = new Artist(2, "Elton John");
-       final Artist artist3 = new Artist(3, "Marilyn Manson");
+       final Artist artist1 = new Artist("Bob Marley");
+       final Artist artist2 = new Artist("Elton John");
+       final Artist artist3 = new Artist("Marilyn Manson");
        final List<Artist> artists = new ArrayList<>();
        artists.add(artist1);
        artists.add(artist2);

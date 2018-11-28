@@ -1,1 +1,4 @@
-CREATE TABLE ARTISTS (ID INT COMMENT 'artisti id' , NAME VARCHAR(100) COMMENT 'artistin nimi');
+CREATE TABLE `ARTISTS`(
+  `id` INT AUTO_INCREMENT primary key NOT NULL,
+  `name` VARCHAR(100) NOT NULL UNIQUE COMMENT 'artistin nimi'
+  );
