@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import recordstore.dao.ArtistDao;
 import recordstore.dao.DbArtistDao;
 import recordstore.data.Artist;
+import recordstore.exception.RecordStoreException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.servlet.RequestDispatcher;
@@ -17,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
-import static recordstore.db.SessionFactory.DbPass;
+import static recordstore.db.SessionFactory.DB_PASS;
 
 @WebServlet(name = "ArtistServlet", urlPatterns = "/artists")
 public class ArtistServlet extends HttpServlet {
@@ -30,7 +32,7 @@ public class ArtistServlet extends HttpServlet {
   private static DataSource createDataSource() {
     HikariDataSource dataSource = new HikariDataSource();
     dataSource.setJdbcUrl(JDBC_URL_PATTERN);
-    dataSource.setPassword(DbPass);
+    dataSource.setPassword(DB_PASS);
     return dataSource;
   }
 
@@ -51,8 +53,7 @@ public class ArtistServlet extends HttpServlet {
   }
 
   private void findArtists(HttpServletRequest request) {
-    try {
-      Stream<Artist> results = dbArtistDao.getAll();
+    try (Stream<Artist> results = dbArtistDao.getAll()) {
       LOGGER.debug("Haettu artistit: {}", results);
       request.setAttribute("results", results);
 
@@ -73,13 +74,14 @@ public class ArtistServlet extends HttpServlet {
 
   private void generateArtists(HttpServletRequest request) throws SQLException {
     String artistName = request.getParameter("name");
-    int id = Integer.parseInt(request.getParameter("number"));
-    if (id == 0 || id < 0) {
-      LOGGER.error("id viallinen: {}", id);
-      throw new NumberFormatException("Id pitää olla positiivinen ja suurempi kuin 0");
+
+
+    Artist artist = new Artist(artistName);
+    try{
+        dbArtistDao.add(artist);
+    } catch (SQLException e) {
+        throw new RecordStoreException("Artistin lisäys epäonnistui", e);
     }
-    Artist artist = new Artist(id, artistName);
-    dbArtistDao.add(artist);
     LOGGER.info("Lisätty artisti: {}", artist);
   }
 }
