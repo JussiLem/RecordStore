@@ -29,11 +29,11 @@ public class ArtistServlet extends HttpServlet {
   private final DataSource dataSource = createDataSource();
   private final ArtistDao dbArtistDao = new DbArtistDao(dataSource);
 
-  private static DataSource createDataSource() {
-    HikariDataSource dataSource = new HikariDataSource();
-    dataSource.setJdbcUrl(JDBC_URL_PATTERN);
-    dataSource.setPassword(DB_PASS);
-    return dataSource;
+  private DataSource createDataSource() {
+    HikariDataSource hikariDataSource = new HikariDataSource();
+    hikariDataSource.setJdbcUrl(JDBC_URL_PATTERN);
+    hikariDataSource.setPassword(DB_PASS);
+    return hikariDataSource;
   }
 
   @Override
@@ -53,9 +53,9 @@ public class ArtistServlet extends HttpServlet {
   }
 
   private void findArtists(HttpServletRequest request) {
-    try (Stream<Artist> results = dbArtistDao.getAll()) {
-      LOGGER.debug("Haettu artistit: {}", results);
-      request.setAttribute("results", results);
+    try (Stream<Artist> artistStream = dbArtistDao.getAll()) {
+      artistStream.forEach(artist -> request.setAttribute("artistStream", artist));
+      //request.setAttribute("artistStream", artistStream);
 
     } catch (SQLException e) {
       LOGGER.error("Artisteja ei saatu haettua {}", e);
@@ -67,22 +67,19 @@ public class ArtistServlet extends HttpServlet {
     try {
       generateArtists(request);
       request.getRequestDispatcher("/WEB-INF/artistList.jsp").include(request, response);
-    } catch (SQLException | IOException | ServletException e) {
+    } catch (IOException | ServletException e) {
       LOGGER.error("Servlet post virhe: {}", e);
     }
   }
 
-  private void generateArtists(HttpServletRequest request) throws SQLException {
+  private void generateArtists(HttpServletRequest request) {
     String artistName = request.getParameter("name");
-
-
     Artist artist = new Artist(artistName);
-    try{
-        dbArtistDao.add(artist);
+    try {
+      dbArtistDao.add(artist);
     } catch (SQLException e) {
-        throw new RecordStoreException("Artistin lisäys epäonnistui", e);
+      throw new RecordStoreException("Artistin lisäys epäonnistui", e);
     }
     LOGGER.info("Lisätty artisti: {}", artist);
   }
 }
-
