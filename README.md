@@ -15,3 +15,6 @@ To run the project you can either
 docker-compose up
 ````
 
+2. Go to address:
+````bash
+http://localhost:8080/artists
