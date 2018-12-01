@@ -1,5 +1,8 @@
 package recordstore.servlet;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +12,12 @@ import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.InputMismatchException;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -29,6 +33,7 @@ public class ArtistServlet extends HttpServlet {
   private final DataSource dataSource = createDataSource();
   private final ArtistDao dbArtistDao = new DbArtistDao(dataSource);
 
+
   private DataSource createDataSource() {
     HikariDataSource hikariDataSource = new HikariDataSource();
     hikariDataSource.setJdbcUrl(JDBC_URL_PATTERN);
@@ -38,30 +43,54 @@ public class ArtistServlet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+
     try {
       String button = request.getParameter("find");
-      if (Objects.equals(button, "")) {
-        findArtists(request);
+      if (Objects.equals(button, "all")) {
+        getArtists(request);
       }
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/artistList.jsp");
-      if (dispatcher != null) {
-        dispatcher.forward(request, response);
-      }
+      request.getRequestDispatcher("/WEB-INF/artistList.jsp").include(request, response);
     } catch (ServletException | IOException e) {
       LOGGER.error("Servlet get virhe: {}", e);
     }
   }
 
-  private void findArtists(HttpServletRequest request) {
-    try (Stream<Artist> artistStream = dbArtistDao.getAll()) {
-      artistStream.forEach(artist -> request.setAttribute("artistStream", artist));
-      //request.setAttribute("artistStream", artistStream);
+  private void getArtists(HttpServletRequest request) {
+
+
+    try {
+      Object[] artistStream = dbArtistDao.getAll().toArray();
+      LOGGER.info("Artists: {}", artistStream);
+      request.setAttribute("artistStream", artistStream);
 
     } catch (SQLException e) {
-      LOGGER.error("Artisteja ei saatu haettua {}", e);
+      e.printStackTrace();
     }
-  }
+    }
 
+
+    //    LOGGER.debug("Artistit: {}", in);
+     // String json = new Gson().toJson(artistStream);
+
+
+      //request.setAttribute("artistList", artistList);
+
+   // } //catch (SQLException e) {
+   //   LOGGER.error("Artisteja ei saatu haettua {}", e);
+
+
+
+  /*
+    private void findArtists(HttpServletRequest request) {
+      try (Stream<Artist> artistStream = dbArtistDao.getAll()) {
+        artistStream.forEach(artist -> request.setAttribute("artistStream", artist));
+        //request.setAttribute("artistStream", artistStream);
+
+      } catch (SQLException e) {
+        LOGGER.error("Artisteja ei saatu haettua {}", e);
+      }
+    }
+  */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
