@@ -11,31 +11,20 @@ import recordstore.exception.RecordStoreException;
 import static recordstore.db.SessionFactory.execute;
 
 /**
- * This class can be used to start the H2 TCP server (or other H2 servers, for example the PG
- * server) inside a web application container such as Tomcat or Jetty. It can also open a database
- * connection.
+ * Kyseinen luokka kuuntelee sovelluksen käynnistymistä
  */
 @WebListener
-public class DbStarter implements ServletContextListener {
-  private static final Logger LOGGER = LoggerFactory.getLogger(DbStarter.class);
-
+public class RecordStoreListener implements ServletContextListener {
+  private static final Logger LOGGER = LoggerFactory.getLogger(RecordStoreListener.class);
 
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-    try{
+    try {
       LOGGER.info("Luodaan tietokanta ja yhteys");
       execute();
     } catch (RecordStoreException e) {
       LOGGER.error("Tietokannan luonnisa virhe!", e);
     }
-
-
   }
-
-
-
-
-
-
-    }
+}
