@@ -101,7 +101,7 @@ public class DbArtistDao implements ArtistDao {
 
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE id = ?")) {
+                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE artistId = ?")) {
 
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
@@ -150,7 +150,7 @@ public class DbArtistDao implements ArtistDao {
         try(
             Connection connection = getConnection();
             PreparedStatement statement =
-                    connection.prepareStatement("UPDATE ARTISTS SET name = ? WHERE id = ?")) {
+                    connection.prepareStatement("UPDATE ARTISTS SET name = ? WHERE artistId = ?")) {
                 statement.setString(1, artist.getName());
                 statement.setLong(2, artist.getId());
                 return statement.executeUpdate() > 0;
@@ -166,7 +166,7 @@ public class DbArtistDao implements ArtistDao {
     public boolean delete(Artist artist) {
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM ARTISTS WHERE id = ?")) {
+                     connection.prepareStatement("DELETE FROM ARTISTS WHERE artistId = ?")) {
             statement.setLong(1, artist.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
