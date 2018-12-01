@@ -68,29 +68,6 @@ public class ArtistServlet extends HttpServlet {
     }
     }
 
-
-    //    LOGGER.debug("Artistit: {}", in);
-     // String json = new Gson().toJson(artistStream);
-
-
-      //request.setAttribute("artistList", artistList);
-
-   // } //catch (SQLException e) {
-   //   LOGGER.error("Artisteja ei saatu haettua {}", e);
-
-
-
-  /*
-    private void findArtists(HttpServletRequest request) {
-      try (Stream<Artist> artistStream = dbArtistDao.getAll()) {
-        artistStream.forEach(artist -> request.setAttribute("artistStream", artist));
-        //request.setAttribute("artistStream", artistStream);
-
-      } catch (SQLException e) {
-        LOGGER.error("Artisteja ei saatu haettua {}", e);
-      }
-    }
-  */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
