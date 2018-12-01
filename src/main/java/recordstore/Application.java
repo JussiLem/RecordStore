@@ -2,9 +2,7 @@ package recordstore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import recordstore.dao.ArtistDao;
-import recordstore.dao.DbArtistDao;
-import recordstore.dao.InMemoryArtistDao;
+import recordstore.dao.artist.ArtistDao;
 import recordstore.data.Artist;
 import recordstore.schema.ArtistSchemaSql;
 

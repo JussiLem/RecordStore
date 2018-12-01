@@ -1,4 +1,4 @@
-package recordstore.dao;
+package recordstore.dao.artist;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

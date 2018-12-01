@@ -3,6 +3,7 @@ package recordstore.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import recordstore.dao.artist.InMemoryArtistDao;
 import recordstore.data.Artist;
 
 import java.util.Optional;
