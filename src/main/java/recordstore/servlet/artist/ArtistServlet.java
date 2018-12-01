@@ -1,4 +1,4 @@
-package recordstore.servlet;
+package recordstore.servlet.artist;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import recordstore.dao.ArtistDao;
 import recordstore.dao.DbArtistDao;
 import recordstore.data.Artist;
+import recordstore.db.SessionFactory;
 import recordstore.exception.RecordStoreException;
 
 import java.io.IOException;
@@ -15,8 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
-
-import static recordstore.db.SessionFactory.DB_PASS;
 
 @WebServlet(name = "ArtistServlet", urlPatterns = "/artists")
 public class ArtistServlet extends HttpServlet {
@@ -30,7 +29,7 @@ public class ArtistServlet extends HttpServlet {
   private DataSource createDataSource() {
     HikariDataSource hikariDataSource = new HikariDataSource();
     hikariDataSource.setJdbcUrl(JDBC_URL_PATTERN);
-    hikariDataSource.setPassword(DB_PASS);
+    hikariDataSource.setPassword(SessionFactory.DB_PASS);
     return hikariDataSource;
   }
 
@@ -64,8 +63,9 @@ public class ArtistServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
-      generateArtists(request);
-      request.getRequestDispatcher("/WEB-INF/artistList.jsp").include(request, response);
+        generateArtists(request);
+        request.getRequestDispatcher("/WEB-INF/artistList.jsp").include(request, response);
+
     } catch (IOException | ServletException e) {
       LOGGER.error("Servlet post virhe: {}", e);
     }
