@@ -29,7 +29,7 @@ public class DbArtistDao implements ArtistDao {
      * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code>
      * säilömiseen ja artistin tietojen hakemiseen
      *
-     * @param dataSource ei-null yhteys.
+     * @param dataSource nullia ei sallita.
      */
     public DbArtistDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -82,8 +82,14 @@ public class DbArtistDao implements ArtistDao {
         }
     }
 
-    private Artist createArtist(ResultSet resultSet) throws SQLException {
-        return new Artist(resultSet.getString("name"));
+    private Artist createArtist(ResultSet resultSet) {
+        Artist artist;
+        try{
+             artist = new Artist(resultSet.getString("name"));
+        } catch (SQLException e) {
+            throw new RecordStoreException("Artisti on jo olemassa");
+        }
+        return artist;
     }
 
     /**
