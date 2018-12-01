@@ -157,7 +157,6 @@ public class DbArtistDao implements ArtistDao {
         } catch (SQLException ex) {
             throw new RecordStoreException(ex.getMessage(), ex);
         }
-
     }
 
     /**
