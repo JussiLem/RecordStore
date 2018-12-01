@@ -1,8 +1,5 @@
 package recordstore.servlet;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +9,8 @@ import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Stream;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -64,7 +57,7 @@ public class ArtistServlet extends HttpServlet {
       request.setAttribute("artistStream", artistStream);
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new RecordStoreException("Artistia ei saatu haettua", e);
     }
     }
 
