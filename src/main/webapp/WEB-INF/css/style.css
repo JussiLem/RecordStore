@@ -44,7 +44,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
 }
 
-#login-field {
+#artist-field {
     display: block;
     margin: auto auto 0 auto;
     width: 40%;
@@ -58,7 +58,7 @@ body {
     outline: none;
 }
 
-#login-button {
+#artist-button-get {
     display: block;
     margin: -2px auto auto auto;
     font-size: 30px;
