@@ -3,8 +3,6 @@ package recordstore.servlet.artist;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import recordstore.dao.album.AlbumDao;
-import recordstore.dao.album.DbAlbumDao;
 import recordstore.dao.artist.ArtistDao;
 import recordstore.dao.artist.DbArtistDao;
 import recordstore.data.Artist;
@@ -25,7 +23,6 @@ public class ArtistServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private final DataSource dataSource = createDataSource();
   private final ArtistDao dbArtistDao = new DbArtistDao(dataSource);
-  private final AlbumDao dbAlbumDao = new DbAlbumDao(dataSource);
 
   private DataSource createDataSource() {
     HikariDataSource hikariDataSource = new HikariDataSource();
