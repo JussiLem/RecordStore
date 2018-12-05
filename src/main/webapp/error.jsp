@@ -7,13 +7,13 @@
 </head>
 <body>
 <% if(response.getStatus() == 500){ %>
-<font color="red">Error: <%=exception.getMessage() %></font><br>
+<span style="color: red; ">Error: <%=exception.getMessage() %></span><br>
 
 <%-- include login page --%>
-<%@ include file="artistList.jsp"%>
+<%@ include file="WEB-INF/artistList.jsp"%>
 <%}else {%>
 Hi There, error code is <%=response.getStatus() %><br>
-Please go to <a href="/artists">home page</a>
+Please go to <a href="${pageContext.request.contextPath}/artists">home page</a>
 <%} %>
 </body>
 </html>

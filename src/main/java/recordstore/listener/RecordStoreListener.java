@@ -11,7 +11,7 @@ import recordstore.exception.RecordStoreException;
 import static recordstore.db.SessionFactory.execute;
 
 /**
- * Kyseinen luokka kuuntelee sovelluksen käynnistymistä
+ * Kuuntelee sovelluksen käynnistymistä
  */
 @WebListener
 public class RecordStoreListener implements ServletContextListener {

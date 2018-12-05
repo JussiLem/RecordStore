@@ -14,43 +14,36 @@
 <body>
 <div id="splash"></div>
 
-<h1>Artist name</h1>
+<h1>Add and list artists</h1>
 
 <div id="wrapper">
     <h2>Add artist</h2>
     <form action="artists" method="post">
         <input id="artist-field" type="text" placeholder="Enter Artist Name" maxlength="40"
                name="artist" autofocus autocomplete="off" required>
-        <input id="album-field" type="text" placeholder="Enter Album Name" maxlength="40"
-               name="album" autofocus autocomplete="off" required>
         <button id="artist-button" type="submit">Submit</button>
     </form>
     <h2>List all artists and albums</h2>
     <form action="artists" method="get">
         <button id="artist-button-get" type="submit" name="find" value="all">Find</button>
     </form>
-    <table>
-        <tr>
-            <th>Artist id</th>
-            <th>Artist name</th>
-            <th>Album id</th>
-            <th>Album name</th>
-        </tr>
+
 
         <c:forEach items="${ artistStream }" var="artist">
-
+        <c:if test="${artist != null}">
+    <table>
+            <tr>
+                <th>Artist id</th>
+                <th>Artist name</th>
+            </tr>
         <tr>
-            <td><p>${artist.id}</p></td>
-            <td><p>${artist.name}</p></td>
-            <c:forEach items="${ albumStream }" var="album">
-            <td><p>${album.id}</p></td>
-            <td><p>${album.name}</p></td>
-            </c:forEach>
+            <td>${artist.id}</td>
+            <td>${artist.name}</td>
         </tr>
-        </c:forEach>
-
-
     </table>
+        </c:if>
+        </c:forEach>
+    <span class="error">${message}</span>
     <div id="credits-text">By Jussi Lemmetyinen</div>
 </div>
 
