@@ -84,7 +84,7 @@ public class DbAlbumDao implements AlbumDao {
 
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM ALBUMS WHERE id = ?")) {
+                     connection.prepareStatement("SELECT * FROM ALBUMS WHERE albumId = ?")) {
 
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
@@ -125,7 +125,7 @@ public class DbAlbumDao implements AlbumDao {
         try(
                 Connection connection = getConnection();
                 PreparedStatement statement =
-                        connection.prepareStatement("UPDATE ALBUMS SET name = ? WHERE id = ?")) {
+                        connection.prepareStatement("UPDATE ALBUMS SET name = ? WHERE albumId = ?")) {
             statement.setString(1, album.getName());
             statement.setLong(2, album.getId());
             return statement.executeUpdate() > 0;
@@ -138,7 +138,7 @@ public class DbAlbumDao implements AlbumDao {
     public boolean delete(Album album) throws SQLException {
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM ALBUMS WHERE id = ?")) {
+                     connection.prepareStatement("DELETE FROM ALBUMS WHERE albumId = ?")) {
             statement.setLong(1, album.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
