@@ -1,8 +1,8 @@
-package recordstore.dao;
+package recordstore.dao.album;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import recordstore.data.Artist;
+import recordstore.data.Album;
 import recordstore.exception.RecordStoreException;
 
 import javax.sql.DataSource;
@@ -17,46 +17,31 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * An implementation of {@link ArtistDao} that persists artists in RDBMS.
- *
- */
-public class DbArtistDao implements ArtistDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
+public class DbAlbumDao implements AlbumDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbAlbumDao.class);
     private final DataSource dataSource;
 
-    /**
-     * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code>
-     * säilömiseen ja artistin tietojen hakemiseen
-     *
-     * @param dataSource nullia ei sallita.
-     */
-    public DbArtistDao(DataSource dataSource) {
+    public DbAlbumDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    /**
-     * @return a lazily populated stream of artists. Note the stream returned must be closed to
-     *     free all the acquired resources. The stream keeps an open connection to the database till
-     *     it is complete or is closed manually.
-     */
     @Override
-    public Stream<Artist> getAll() {
+    public Stream<Album> getAll() throws SQLException {
         Connection connection;
         try {
             connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ARTISTS"); // NOSONAR
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ALBUMS"); // NOSONAR
             ResultSet resultSet = statement.executeQuery(); // NOSONAR
-            return StreamSupport.stream(new Spliterators.AbstractSpliterator<Artist>(Long.MAX_VALUE,
+            return StreamSupport.stream(new Spliterators.AbstractSpliterator<Album>(Long.MAX_VALUE,
                     Spliterator.ORDERED) {
 
                 @Override
-                public boolean tryAdvance(Consumer<? super Artist> action) {
+                public boolean tryAdvance(Consumer<? super Album> action) {
                     try {
                         if (!resultSet.next()) {
                             return false;
                         }
-                        action.accept(createArtist(resultSet));
+                        action.accept(createAlbums(resultSet));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e); // NOSONAR
@@ -82,31 +67,29 @@ public class DbArtistDao implements ArtistDao {
         }
     }
 
-    private Artist createArtist(ResultSet resultSet) {
-        Artist artist;
+    private Album createAlbums(ResultSet resultSet) {
+        Album album;
         try{
-             artist = new Artist(resultSet.getString("name"));
+            album = new Album(resultSet.getString("name"));
         } catch (SQLException e) {
-            throw new RecordStoreException("Artisti on jo olemassa");
+            throw new RecordStoreException("Albumi on jo olemassa");
         }
-        return artist;
+        return album;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
-    public Optional<Artist> getById(int id) throws SQLException {
+    public Optional<Album> getById(int id) throws SQLException {
         ResultSet resultSet = null;
 
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE id = ?")) {
+                     connection.prepareStatement("SELECT * FROM ALBUMS WHERE albumId = ?")) {
 
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(createArtist(resultSet));
+                return Optional.of(createAlbums(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -117,58 +100,46 @@ public class DbArtistDao implements ArtistDao {
                 resultSet.close();
             }
         }
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean add(Artist artist) throws SQLException {
-        if (getById(artist.getId()).isPresent()) {
+    public boolean add(Album album) throws SQLException {
+        if (getById(album.getId()).isPresent()) {
             return false;
         }
 
         try(
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO ARTISTS VALUES (?,?)")) {
-            statement.setLong(1, artist.getId());
-            statement.setString(2, artist.getName());
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO ALBUMS VALUES (?,?)")) {
+            statement.setLong(1, album.getId());
+            statement.setString(2, album.getName());
             statement.execute();
             return true;
-            } catch (SQLException ex) {
-            throw new RecordStoreException(ex.getMessage(), ex);
-        }
-
-    }
-    /**
-     * {@inheritDoc}
-     */
-
-    @Override
-    public boolean update(Artist artist)  {
-        try(
-            Connection connection = getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("UPDATE ARTISTS SET name = ? WHERE id = ?")) {
-                statement.setString(1, artist.getName());
-                statement.setLong(2, artist.getId());
-                return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
             throw new RecordStoreException(ex.getMessage(), ex);
         }
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean delete(Artist artist) {
+    public boolean update(Album album) throws SQLException {
+        try(
+                Connection connection = getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement("UPDATE ALBUMS SET name = ? WHERE albumId = ?")) {
+            statement.setString(1, album.getName());
+            statement.setLong(2, album.getId());
+            return statement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            throw new RecordStoreException(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public boolean delete(Album album) throws SQLException {
         try (Connection connection = getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM ARTISTS WHERE id = ?")) {
-            statement.setLong(1, artist.getId());
+                     connection.prepareStatement("DELETE FROM ALBUMS WHERE albumId = ?")) {
+            statement.setLong(1, album.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
             throw new RecordStoreException(ex.getMessage(), ex);

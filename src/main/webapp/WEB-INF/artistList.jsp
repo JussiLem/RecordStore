@@ -4,48 +4,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Record Store</title>
+    <title>Record Store - Artists</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--   <link rel="stylesheet" href="./css/style.css"> -->
+ <!--   <link rel="stylesheet" href="./css/style.css"> -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Bitter" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script>
-        $(document).on("click", "#artist-button-get", function () {
-            $.get("in", function (responseJson) {
-                let $ul = $("<ul>").appendTo($("#somediv"));
-                $.each(responseJson, function (index, item) {
-                    $("<li>").text(item).appendTo($ul);
-                });
-            });
-        });
-    </script>
+
 </head>
 <body>
 <div id="splash"></div>
 
-<h1>Artist name</h1>
+<h1>Add and list artists</h1>
 
 <div id="wrapper">
     <h2>Add artist</h2>
     <form action="artists" method="post">
         <input id="artist-field" type="text" placeholder="Enter Artist Name" maxlength="40"
-               name="name" autofocus autocomplete="off" required>
+               name="artist" autofocus autocomplete="off" required>
         <button id="artist-button" type="submit">Submit</button>
     </form>
-    <h2>List all artists</h2>
+    <h2>List all artists and albums</h2>
     <form action="artists" method="get">
         <button id="artist-button-get" type="submit" name="find" value="all">Find</button>
     </form>
-    <div id="somediv" ></div>
-    <ul>
+
+
         <c:forEach items="${ artistStream }" var="artist">
-            <li>${artist.name}</li>
-
-
+        <c:if test="${artist != null}">
+    <table>
+            <tr>
+                <th>Artist id</th>
+                <th>Artist name</th>
+            </tr>
+        <tr>
+            <td>${artist.id}</td>
+            <td>${artist.name}</td>
+        </tr>
+    </table>
+        </c:if>
         </c:forEach>
-
-    </ul>
+    <span class="error">${message}</span>
     <div id="credits-text">By Jussi Lemmetyinen</div>
 </div>
 

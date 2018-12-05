@@ -1,9 +1,6 @@
 package recordstore.data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -16,8 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Artist {
 
     private static final AtomicInteger count = new AtomicInteger(0);
-    @Id
-    @GeneratedValue
     private int id;
     private String name;
 
@@ -30,6 +25,9 @@ public class Artist {
         id = count.incrementAndGet();
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "artistId")
     public int getId() {
         return id;
     }

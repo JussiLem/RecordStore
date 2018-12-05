@@ -1,4 +1,4 @@
-package recordstore.dao;
+package recordstore.dao.artist;
 
 import recordstore.data.Artist;
 
