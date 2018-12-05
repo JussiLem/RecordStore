@@ -13,9 +13,9 @@ import javax.sql.DataSource;
 
 public class SessionFactory {
 
-  private static final String JDBC_URL_PATTERN = "jdbc:mariadb://recordstoredb:3306/records";
   private static final Logger LOGGER = LoggerFactory.getLogger(SessionFactory.class);
   private static final Config config = ConfigFactory.load().getConfig("database");
+  private static final String JDBC_URL_PATTERN = config.getString("host");
   private static final String DB_PASS = config.getString("password");
   private static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
   private static final String DB_USER = config.getString("user");
@@ -50,7 +50,7 @@ public class SessionFactory {
     try {
       DataSource dataSource = createDataSource();
       flywayMigration(dataSource);
-    } catch (Exception e) {
+    } catch (RuntimeException e) {
       throw new IllegalArgumentException(e);
     }
   }
