@@ -1,4 +1,4 @@
-package recordstore.servlet;
+package recordstore.servlet.error;
 
 import java.io.IOException;
 import java.io.PrintWriter;
