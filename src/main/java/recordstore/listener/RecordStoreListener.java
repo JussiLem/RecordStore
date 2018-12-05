@@ -6,9 +6,8 @@ import javax.servlet.annotation.WebListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import recordstore.db.SessionFactory;
 import recordstore.exception.RecordStoreException;
-
-import static recordstore.db.SessionFactory.execute;
 
 /**
  * Kuuntelee sovelluksen käynnistymistä
@@ -22,7 +21,7 @@ public class RecordStoreListener implements ServletContextListener {
 
     try {
       LOGGER.info("Luodaan tietokanta ja yhteys");
-      execute();
+      SessionFactory.execute();
     } catch (RecordStoreException e) {
       LOGGER.error("Tietokannan luonnisa virhe!", e);
     }

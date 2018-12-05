@@ -13,10 +13,10 @@ import javax.sql.DataSource;
 
 public class SessionFactory {
 
-  public static final String JDBC_URL_PATTERN = "jdbc:mariadb://recordstoredb:3306/records";
+  private static final String JDBC_URL_PATTERN = "jdbc:mariadb://recordstoredb:3306/records";
   private static final Logger LOGGER = LoggerFactory.getLogger(SessionFactory.class);
   private static final Config config = ConfigFactory.load().getConfig("database");
-  public static final String DB_PASS = config.getString("password");
+  private static final String DB_PASS = config.getString("password");
   private static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
   private static final String DB_USER = config.getString("user");
 
@@ -24,7 +24,7 @@ public class SessionFactory {
     // vain staattisia metodeja
   }
 
-  private static DataSource createDataSource() {
+  public static DataSource createDataSource() {
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl(JDBC_URL_PATTERN);
     config.setDriverClassName(JDBC_DRIVER);

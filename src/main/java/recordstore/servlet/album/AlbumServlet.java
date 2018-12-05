@@ -22,15 +22,8 @@ import java.sql.SQLException;
 public class AlbumServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumServlet.class);
     private static final long serialVersionUID = 1L;
-    private final DataSource dataSource = createDataSource();
+    private final DataSource dataSource = SessionFactory.createDataSource();
     private final AlbumDao dbAlbumDao = new DbAlbumDao(dataSource);
-
-    private DataSource createDataSource() {
-        HikariDataSource hikariDataSource = new HikariDataSource();
-        hikariDataSource.setJdbcUrl(SessionFactory.JDBC_URL_PATTERN);
-        hikariDataSource.setPassword(SessionFactory.DB_PASS);
-        return hikariDataSource;
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
