@@ -1,6 +1,5 @@
 package recordstore.servlet.album;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.dao.album.AlbumDao;
@@ -18,7 +17,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/albums", name = "AlbumServlet")
+@WebServlet(urlPatterns = "/addalbum", name = "AlbumServlet")
 public class AlbumServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumServlet.class);
     private static final long serialVersionUID = 1L;
@@ -26,8 +25,8 @@ public class AlbumServlet extends HttpServlet {
     private final AlbumDao dbAlbumDao = new DbAlbumDao(dataSource);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/albumList.jsp").include(request, response);
     }
 
     @Override

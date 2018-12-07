@@ -5,6 +5,10 @@
     <title>Record Store - Albums</title>
 </head>
 <body>
-
+<form action="addalbum" method="post">
+    <input id="album-field" type="text" placeholder="Enter Album Name" maxlength="40"
+           name="album" autofocus autocomplete="off" required>
+    <button id="album-button" type="submit">Add</button>
+</form>
 </body>
 </html>
