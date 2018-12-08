@@ -120,6 +120,8 @@ public class DbArtistDao implements ArtistDao {
 
     }
 
+
+
     /**
      * {@inheritDoc}
      */
@@ -128,7 +130,6 @@ public class DbArtistDao implements ArtistDao {
         if (getById(artist.getId()).isPresent()) {
             return false;
         }
-
         try(
             Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO ARTISTS VALUES (?,?)")) {
@@ -139,7 +140,6 @@ public class DbArtistDao implements ArtistDao {
             } catch (SQLException ex) {
             throw new RecordStoreException(ex.getMessage(), ex);
         }
-
     }
     /**
      * {@inheritDoc}

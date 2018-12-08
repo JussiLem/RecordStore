@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "ArtistAddServlet", urlPatterns = "/addartists")
+@WebServlet(name = "ArtistAddServlet", urlPatterns = "/artist/addartists")
 public class ArtistAddServlet extends ArtistServlet {
   private static final Logger LOGGER = LoggerFactory.getLogger(ArtistAddServlet.class);
 
@@ -21,8 +21,13 @@ public class ArtistAddServlet extends ArtistServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
       String artistName = request.getParameter("add-artist");
-      createArtist(artistName);
-      request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+      try{
+          createArtist(artistName);
+          request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").forward(request, response);
+      } catch (RecordStoreException e) {
+          request.setAttribute("message", "Artisti on jo olemassa");
+      }
+
 
     } catch (IOException | ServletException e) {
       LOGGER.error("Servlet post virhe: {}", e);

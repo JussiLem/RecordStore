@@ -1,18 +1,12 @@
 package recordstore.data;
-
-import recordstore.exception.RecordStoreException;
-
-import javax.persistence.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** Artisti POJO edustaa tietoja, jotka luetaan kannasta. */
-@Entity
-@Table(name = "ARTISTS")
+
 public class Artist {
 
   private static final AtomicInteger count = new AtomicInteger(0);
-  @Id
-  @GeneratedValue
+
   private int id;
   private String name;
 

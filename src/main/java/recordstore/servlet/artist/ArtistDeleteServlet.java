@@ -12,34 +12,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "ArtistDeleteServlet", urlPatterns = "/deleteartist")
+@WebServlet(name = "ArtistDeleteServlet", urlPatterns = "/artist/deleteartist")
 public class ArtistDeleteServlet extends ArtistServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArtistDeleteServlet.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ArtistDeleteServlet.class);
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        try {
-            request.getRequestDispatcher("/WEB-INF/views/artistDelete.jsp").include(request, response);
-        } catch (IOException e) {
-            LOGGER.error("ei saatu ohjattua jsp sivulle");
-        }
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    String artistName = request.getParameter("remove-artist");
+    Artist artist = new Artist(artistName, true);
+    if (artist.getName() != null) {
+      try {
+        dbArtistDao.delete(artist);
+        LOGGER.info("Poistettu artisti: {}", artist);
+        request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").include(request, response);
+      } catch (SQLException | ServletException | IOException e) {
+        throw new RecordStoreException("Artistin poistaminen epäonnistui", e);
+      }
+    } else {
+      LOGGER.info("Poistettavaa artistia ei löytnyt: {}", artist);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-            String artistName = request.getParameter("remove-artist");
-            Artist artist = new Artist(artistName);
-            if (artist.getName() != null) {
-                try {
-                    dbArtistDao.delete(artist);
-                    LOGGER.info("Poistettu artisti: {}, albumi: {}", artist);
-                } catch (SQLException e) {
-                    throw new RecordStoreException("Artistin poistaminen epäonnistui", e);
-                }
-            } else {
-                LOGGER.info("Poistettavaa artistia ei löytnyt: {}", artist);
-            }
-
-
-    }
+  }
 }

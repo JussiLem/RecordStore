@@ -2,7 +2,6 @@
 <html>
 <jsp:include page="header.jsp"/>
 <body>
-<jsp:include page="artistList.jsp"/>
-<jsp:include page="artistAdd.jsp"/>
+<a href="artist">Click for artists</a>
 </body>
 </html>

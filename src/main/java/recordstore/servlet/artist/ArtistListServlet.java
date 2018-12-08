@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet(name = "ArtistListServlet", urlPatterns = "/listartists")
+@WebServlet(name = "ArtistListServlet", urlPatterns = "/artist/listartists")
 public class ArtistListServlet extends ArtistServlet {
   private static final Logger LOGGER = LoggerFactory.getLogger(ArtistListServlet.class);
 
@@ -23,7 +23,7 @@ public class ArtistListServlet extends ArtistServlet {
       if (Objects.equals(button, "all")) {
         getArtists(request);
       }
-      request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").forward(request, response);
     } catch (ServletException | IOException e) {
       LOGGER.error("Servlet get virhe: {}", e);
     }

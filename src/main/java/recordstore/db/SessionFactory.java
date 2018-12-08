@@ -24,7 +24,7 @@ public class SessionFactory {
     // vain staattisia metodeja
   }
 
-  public static DataSource createDataSource() {
+  private static DataSource createDataSource() {
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl(JDBC_URL_PATTERN);
     config.setDriverClassName(JDBC_DRIVER);

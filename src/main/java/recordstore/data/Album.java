@@ -1,14 +1,12 @@
 package recordstore.data;
 
-import javax.persistence.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Entity
-@Table(name = "ALBUMS")
 public class Album {
 
     private static final AtomicInteger count = new AtomicInteger(0); // creates new id
-    private int id; // albumId
+
+    private int id;
     private String name;
 
     /**
@@ -21,9 +19,15 @@ public class Album {
         id = count.incrementAndGet();
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "albumId")
+    public Album(String name, boolean isFilled) {
+        this.name = name;
+        if (!isFilled) {
+            id = count.incrementAndGet();
+        } else {
+         id = count.decrementAndGet();
+        }
+
+    }
     public int getId() {
         return id;
     }
@@ -32,7 +36,6 @@ public class Album {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
