@@ -1,13 +1,15 @@
 package recordstore.data;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Album {
 
     private static final AtomicInteger count = new AtomicInteger(0); // creates new id
-
+    private Artist artist;
     private int id;
     private String name;
+    private List<Track> tracks;
 
     /**
      * Luo instanssin albumista
