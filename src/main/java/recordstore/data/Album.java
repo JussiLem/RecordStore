@@ -1,58 +1,55 @@
 package recordstore.data;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Album {
+  private Artist artist;
+  private int id;
+  private String name;
+  private List<Track> tracks;
 
-    private static final AtomicInteger count = new AtomicInteger(0); // creates new id
-    private Artist artist;
-    private int id;
-    private String name;
-    private List<Track> tracks;
+  /** Luo instanssin albumista */
+  public Album(int id, String name, Artist artist) {
+    super();
+    this.artist = artist;
+    this.name = name;
+    this.id = id;
+  }
 
-    /**
-     * Luo instanssin albumista
-     */
+  public int getId() {
+    return id;
+  }
 
-    public Album(String name) {
-        this.name = name;
-        boolean isFilled = false;
-        id = count.incrementAndGet();
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public Album(String name, boolean isFilled) {
-        this.name = name;
-        if (!isFilled) {
-            id = count.incrementAndGet();
-        } else {
-         id = count.decrementAndGet();
-        }
+  public String getName() {
+    return name;
+  }
 
-    }
-    public int getId() {
-        return id;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public Artist getArtist() {
+    return artist;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setArtist(Artist artist) {
+    this.artist = artist;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public List<Track> getTracks() {
+    return tracks;
+  }
 
-    @Override
-    public String toString() {
-        return "Album{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+  public void setTracks(List<Track> tracks) {
+    this.tracks = tracks;
+  }
 
-
+  @Override
+  public String toString() {
+    return "Album{" + "id=" + id + ", name='" + name + '\'' + '}';
+  }
 }
