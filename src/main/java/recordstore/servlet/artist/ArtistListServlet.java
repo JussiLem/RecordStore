@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+/**
+ *  Hakee tietokannasta artistilistan ja tulostaa sen näytölle
+ */
 @WebServlet(name = "ArtistListServlet", urlPatterns = "/artist/listartists")
 public class ArtistListServlet extends ArtistServlet {
   private static final Logger LOGGER = LoggerFactory.getLogger(ArtistListServlet.class);

@@ -6,6 +6,7 @@ import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
 import javax.sql.DataSource;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,160 +18,146 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * An implementation of {@link ArtistDao} that persists artists in RDBMS.
- *
- */
+/** An implementation of {@link ArtistDao} that persists artists in RDBMS. */
 public class DbArtistDao implements ArtistDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
-    private final DataSource dataSource;
+  private static final Logger LOGGER = LoggerFactory.getLogger(DbArtistDao.class);
+  private final DataSource dataSource;
 
-    /**
-     * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code>
-     * säilömiseen ja artistin tietojen hakemiseen
-     *
-     * @param dataSource nullia ei sallita.
-     */
-    public DbArtistDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+  /**
+   * Luo instanssin {@link DbArtistDao} joka hyödyntää tarjottua <code>conn</code> säilömiseen ja
+   * artistin tietojen hakemiseen
+   *
+   * @param dataSource nullia ei sallita.
+   */
+  public DbArtistDao(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
-    /**
-     * @return a lazily populated stream of artists. Note the stream returned must be closed to
-     *     free all the acquired resources. The stream keeps an open connection to the database till
-     *     it is complete or is closed manually.
-     */
-    @Override
-    public Stream<Artist> getAll() {
-        Connection connection;
-        try {
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ARTISTS"); // NOSONAR
-            ResultSet resultSet = statement.executeQuery(); // NOSONAR
-            return StreamSupport.stream(new Spliterators.AbstractSpliterator<Artist>(Long.MAX_VALUE,
-                    Spliterator.ORDERED) {
+  /**
+   * @return a lazily populated stream of artists. Note the stream returned must be closed to free
+   *     all the acquired resources. The stream keeps an open connection to the database till it is
+   *     complete or is closed manually.
+   */
+  @Override
+  public Stream<Artist> getAll() {
+    Connection connection;
+    try {
+      connection = getConnection();
+      PreparedStatement statement = connection.prepareStatement("SELECT * FROM artists"); // NOSONAR
+      ResultSet resultSet = statement.executeQuery(); // NOSONAR
+      return StreamSupport.stream(
+              new Spliterators.AbstractSpliterator<Artist>(Long.MAX_VALUE, Spliterator.ORDERED) {
 
                 @Override
                 public boolean tryAdvance(Consumer<? super Artist> action) {
-                    try {
-                        if (!resultSet.next()) {
-                            return false;
-                        }
-                        action.accept(createArtist(resultSet));
-                        return true;
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e); // NOSONAR
+                  try {
+                    if (!resultSet.next()) {
+                      return false;
                     }
+                    action.accept(createArtist(resultSet));
+                    return true;
+                  } catch (SQLException e) {
+                    throw new RuntimeException(e); // NOSONAR
+                  }
                 }
-            }, false).onClose(() -> mutedClose(connection, statement, resultSet));
-        } catch (SQLException e) {
-            throw new RecordStoreException(e.getMessage(), e);
-        }
+              },
+              false)
+          .onClose(() -> mutedClose(connection, statement, resultSet));
+    } catch (SQLException e) {
+      throw new RecordStoreException(e.getMessage(), e);
     }
+  }
 
-    private Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+  private Connection getConnection() throws SQLException {
+    return dataSource.getConnection();
+  }
+
+  private void mutedClose(Connection connection, PreparedStatement statement, ResultSet resultSet) {
+    try {
+      resultSet.close();
+      statement.close();
+      connection.close();
+    } catch (SQLException e) {
+      LOGGER.info("SQL ERROR {}", e.getMessage());
     }
+  }
 
-    private void mutedClose(Connection connection, PreparedStatement statement, ResultSet resultSet) {
-        try{
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            LOGGER.info("SQL ERROR {}", e.getMessage());
-        }
+  private Artist createArtist(ResultSet resultSet) {
+    Artist artist;
+    try {
+      artist = new Artist(resultSet.getString("name"));
+    } catch (SQLException e) {
+      throw new RecordStoreException("Artisti on jo olemassa");
     }
+    return artist;
+  }
 
-    private Artist createArtist(ResultSet resultSet) {
-        Artist artist;
-        try{
-             artist = new Artist(resultSet.getString("name"));
-        } catch (SQLException e) {
-            throw new RecordStoreException("Artisti on jo olemassa");
-        }
-        return artist;
+  /** {@inheritDoc} */
+  @Override
+  public Optional<Artist> getById(int id) throws SQLException {
+    ResultSet resultSet = null;
+
+    try (Connection connection = getConnection();
+        PreparedStatement statement =
+            connection.prepareStatement("SELECT * FROM artists WHERE id = ?")) {
+
+      statement.setInt(1, id);
+      resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        return Optional.of(createArtist(resultSet));
+      } else {
+        return Optional.empty();
+      }
+    } catch (SQLException ex) {
+      throw new RecordStoreException(ex.getMessage(), ex);
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Artist> getById(int id) throws SQLException {
-        ResultSet resultSet = null;
-
-        try (Connection connection = getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM ARTISTS WHERE id = ?")) {
-
-            statement.setInt(1, id);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(createArtist(resultSet));
-            } else {
-                return Optional.empty();
-            }
-        } catch (SQLException ex) {
-            throw new RecordStoreException(ex.getMessage(), ex);
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-        }
-
+  /** {@inheritDoc} */
+  @Override
+  public boolean add(Artist artist) throws SQLException {
+    if (getById(artist.getId()).isPresent()) {
+      return false;
     }
-
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean add(Artist artist) throws SQLException {
-        if (getById(artist.getId()).isPresent()) {
-            return false;
-        }
-        try(
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO ARTISTS VALUES (?,?)")) {
-            statement.setLong(1, artist.getId());
-            statement.setString(2, artist.getName());
-            statement.execute();
-            return true;
-            } catch (SQLException ex) {
-            throw new RecordStoreException(ex.getMessage(), ex);
-        }
+    try (Connection connection = getConnection();
+        PreparedStatement statement =
+            connection.prepareStatement("INSERT INTO artists VALUES (?,?)")) {
+      statement.setLong(1, artist.getId());
+      statement.setString(2, artist.getName());
+      statement.execute();
+      return true;
+    } catch (SQLException ex) {
+      throw new RecordStoreException(ex.getMessage(), ex);
     }
-    /**
-     * {@inheritDoc}
-     */
-
-    @Override
-    public boolean update(Artist artist)  {
-        try(
-            Connection connection = getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("UPDATE ARTISTS SET name = ? WHERE id = ?")) {
-                statement.setString(1, artist.getName());
-                statement.setLong(2, artist.getId());
-                return statement.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            throw new RecordStoreException(ex.getMessage(), ex);
-        }
+  }
+  /** {@inheritDoc} */
+  @Override
+  public boolean update(Artist artist) {
+    try (Connection connection = getConnection();
+        PreparedStatement statement =
+            connection.prepareStatement("UPDATE artists SET name = ? WHERE id = ?")) {
+      statement.setString(1, artist.getName());
+      statement.setLong(2, artist.getId());
+      return statement.executeUpdate() > 0;
+    } catch (SQLException ex) {
+      throw new RecordStoreException(ex.getMessage(), ex);
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean delete(Artist artist) {
-        try (Connection connection = getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM ARTISTS WHERE id = ?")) {
-            statement.setLong(1, artist.getId());
-            return statement.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            throw new RecordStoreException(ex.getMessage(), ex);
-        }
+  /** {@inheritDoc} */
+  @Override
+  public boolean delete(Artist artist) {
+    try (Connection connection = getConnection();
+        PreparedStatement statement =
+            connection.prepareStatement("DELETE FROM artists WHERE id = ?")) {
+      statement.setLong(1, artist.getId());
+      return statement.executeUpdate() > 0;
+    } catch (SQLException ex) {
+      throw new RecordStoreException(ex.getMessage(), ex);
     }
+  }
 }

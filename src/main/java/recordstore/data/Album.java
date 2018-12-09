@@ -1,12 +1,14 @@
 package recordstore.data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Album {
-  private Artist artist;
+public class Album implements Serializable {
+  private static final long serialVersionUID = 1L;
+  private transient Artist artist;
   private int id;
   private String name;
-  private List<Track> tracks;
+  private transient List<Track> tracks;
 
   /** Luo instanssin albumista */
   public Album(int id, String name, Artist artist) {
@@ -52,4 +54,5 @@ public class Album {
   public String toString() {
     return "Album{" + "id=" + id + ", name='" + name + '\'' + '}';
   }
+
 }

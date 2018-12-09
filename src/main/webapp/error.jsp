@@ -10,10 +10,10 @@
 <span style="color: red; ">Error: <%=exception.getMessage() %></span><br>
 
 <%-- include login page --%>
-<%@ include file="WEB-INF/views/artist/artistList.jsp"%>
+<%@ include file="WEB-INF/views/index.jsp"%>
 <%}else {%>
 Hi There, error code is <%=response.getStatus() %><br>
-Please go to <a href="${pageContext.request.contextPath}/artists">home page</a>
+Please go to <a href="${pageContext.request.contextPath}/home">home page</a>
 <%} %>
 </body>
 </html>

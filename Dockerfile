@@ -8,7 +8,7 @@ cd /RecordStore-training/ && ./gradlew
 FROM tomcat:9
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
-ENV CATALINA_OPTS -Xms2g -Xmx2g -Xss384k -Duser.timezone=Europe/Helsinki -Duser.country=FI -Duser.language=fi -Dfile.encoding=UTF-8 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+ENV CATALINA_OPTS -Xms1g -Xmx1g -Xss384k -Dfile.encoding=UTF-8 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 WORKDIR $CATALINA_HOME
 COPY --from=compile /RecordStore-training/docker/wait-for-it.sh /$CATALINA_HOME/
 RUN apt-get -q update

@@ -31,7 +31,7 @@ public class DbAlbumDao implements AlbumDao {
     Connection connection;
     try {
       connection = getConnection();
-      PreparedStatement statement = connection.prepareStatement("SELECT * FROM ALBUMS"); // NOSONAR
+      PreparedStatement statement = connection.prepareStatement("SELECT * FROM albums"); // NOSONAR
       ResultSet resultSet = statement.executeQuery(); // NOSONAR
       return StreamSupport.stream(
               new Spliterators.AbstractSpliterator<Album>(Long.MAX_VALUE, Spliterator.ORDERED) {
@@ -74,7 +74,7 @@ public class DbAlbumDao implements AlbumDao {
     return new Album(
         resultSet.getInt("albumId"),
         resultSet.getString("name"),
-        (Artist) resultSet.getObject("artist"));
+        resultSet.getObject("artist", Artist.class));
   }
 
   @Override
@@ -83,7 +83,7 @@ public class DbAlbumDao implements AlbumDao {
 
     try (Connection connection = getConnection();
         PreparedStatement statement =
-            connection.prepareStatement("SELECT * FROM ALBUMS WHERE albumId = ?")) {
+            connection.prepareStatement("SELECT * FROM albums WHERE albumId = ?")) {
 
       statement.setInt(1, id);
       resultSet = statement.executeQuery();
@@ -109,9 +109,10 @@ public class DbAlbumDao implements AlbumDao {
 
     try (Connection connection = getConnection();
         PreparedStatement statement =
-            connection.prepareStatement("INSERT INTO ALBUMS VALUES (?,?)")) {
+            connection.prepareStatement("INSERT INTO albums VALUES (?,?,?)")) {
       statement.setLong(1, album.getId());
       statement.setString(2, album.getName());
+      statement.setObject(3, album.getArtist());
       statement.execute();
       return true;
     } catch (SQLException ex) {
@@ -123,7 +124,7 @@ public class DbAlbumDao implements AlbumDao {
   public boolean update(Album album) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement statement =
-            connection.prepareStatement("UPDATE ALBUMS SET name = ? WHERE albumId = ?")) {
+            connection.prepareStatement("UPDATE albums SET name = ? WHERE albumId = ?")) {
       statement.setString(1, album.getName());
       statement.setLong(2, album.getId());
       return statement.executeUpdate() > 0;
@@ -136,7 +137,7 @@ public class DbAlbumDao implements AlbumDao {
   public boolean delete(Album album) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement statement =
-            connection.prepareStatement("DELETE FROM ALBUMS WHERE albumId = ?")) {
+            connection.prepareStatement("DELETE FROM albums WHERE albumId = ?")) {
       statement.setLong(1, album.getId());
       return statement.executeUpdate() > 0;
     } catch (SQLException ex) {
