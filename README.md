@@ -43,7 +43,16 @@ This will create database and the application in a few minutes.
 4. Go to address:
 http://localhost:8080/home
 
-From the homepage you are able to create artists or albums.
+5. To stop the containers press **CTRL+C**
+
+6. From the homepage you are able to create artists or albums.
+
+#### Note
+Sometimes the database might not be ready before wait-for-it script timer runs out. 
+This will make the recordstore tomcat to timeout and exit. 
+If this occurs, just press **ctrl+c** and run ````docker-compose up```` again.
+
+
 
 ### Database details
 Database connection details can be found from main/resources/application.conf
