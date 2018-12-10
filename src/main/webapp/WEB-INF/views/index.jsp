@@ -7,7 +7,10 @@
 <body>
 
 <h1>RecordStore - homepage</h1>
+<p>1. add artist</p>
 <a href="artist">Click for artists</a>
-<a href="addalbum">Click for albums</a>
+<br>
+<p>2. Then add album</p>
+<a href="album">Click for albums</a>
 </body>
 </html>
