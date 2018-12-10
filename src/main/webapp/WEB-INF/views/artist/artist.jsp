@@ -6,8 +6,11 @@
     <title>RecordStore - Artists</title>
 </head>
 <body>
+<h1>Artist view</h1>
 <jsp:include page="artistList.jsp"/>
 <jsp:include page="artistAdd.jsp"/>
+
+<p>Delete may not work</p>
 <jsp:include page="artistDelete.jsp"/>
 <a href="home">Record Store - Homepage</a>
 </body>

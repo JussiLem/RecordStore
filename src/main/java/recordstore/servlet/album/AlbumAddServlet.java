@@ -13,7 +13,7 @@ import recordstore.data.Album;
 import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
-@WebServlet(urlPatterns = "/addalbum", name = "AlbumServlet")
+@WebServlet(urlPatterns = "/album/addalbum", name = "AlbumServlet")
 public class AlbumAddServlet extends AlbumServlet {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AlbumAddServlet.class);
@@ -23,7 +23,7 @@ public class AlbumAddServlet extends AlbumServlet {
       throws ServletException, IOException {
     try {
       request.setCharacterEncoding("UTF-8");
-      request.getRequestDispatcher("/WEB-INF//views/albumList.jsp").include(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/album/album.jsp").include(request, response);
     } catch (UnsupportedEncodingException | ServletException e) {
       LOGGER.error("Servlet virhe: {}", e.getMessage());
     }
