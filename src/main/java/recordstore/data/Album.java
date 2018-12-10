@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Album implements Serializable {
+
   private static final long serialVersionUID = 1L;
   private transient Artist artist;
   private int id;
   private String name;
   private transient List<Track> tracks;
 
-  /** Luo instanssin albumista */
+  /**
+   * Luo instanssin albumista
+   */
   public Album(int id, String name, Artist artist) {
     super();
     this.artist = artist;

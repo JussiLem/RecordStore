@@ -11,6 +11,6 @@ services:
     image: mariadb
     build: './mariadb/'
     ports:
-      - 3306:3306
+      - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: root

@@ -1,20 +1,21 @@
 package recordstore.servlet.album;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.data.Album;
 import recordstore.data.Artist;
 import recordstore.exception.RecordStoreException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.sql.SQLException;
-
 @WebServlet(urlPatterns = "/addalbum", name = "AlbumServlet")
 public class AlbumAddServlet extends AlbumServlet {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(AlbumAddServlet.class);
 
   @Override

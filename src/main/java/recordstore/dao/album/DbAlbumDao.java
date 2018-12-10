@@ -1,5 +1,6 @@
 package recordstore.dao.album;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.data.Album;
@@ -103,16 +104,25 @@ public class DbAlbumDao implements AlbumDao {
 
   @Override
   public boolean add(Album album) throws SQLException {
-    if (getById(album.getId()).isPresent()) {
+    int id = album.getId();
+    if (getById(id).isPresent()) {
       return false;
     }
 
+    return getAlbumStatement(album, id);
+  }
+
+  private boolean getAlbumStatement(Album album, int id) {
     try (Connection connection = getConnection();
         PreparedStatement statement =
             connection.prepareStatement("INSERT INTO albums VALUES (?,?,?)")) {
-      statement.setLong(1, album.getId());
-      statement.setString(2, album.getName());
-      statement.setObject(3, album.getArtist());
+      statement.setLong(1, id);
+      String name = album.getName();
+      statement.setString(2, name);
+      Artist albumArtist = album.getArtist();
+      Gson gson = new Gson();
+      String albumArtistName = gson.toJson(albumArtist);
+      statement.setObject(3, albumArtistName);
       statement.execute();
       return true;
     } catch (SQLException ex) {

@@ -3,7 +3,6 @@ package recordstore.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.db.SessionFactory;
@@ -13,6 +12,7 @@ import recordstore.db.SessionFactory;
  */
 @WebListener
 public class RecordStoreListener implements ServletContextListener {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(RecordStoreListener.class);
 
   @Override
