@@ -129,7 +129,7 @@ public class DbAlbumDao implements AlbumDao {
       int albumArtistId = albumArtistJson.get("id").getAsInt();
       String albumArtistName = albumArtistJson.get("name").getAsString();
       statement.setInt(3, albumArtistId);
-
+      statement.setString(4, albumArtistName);
       statement.execute();
       return true;
     } catch (SQLException ex) {
