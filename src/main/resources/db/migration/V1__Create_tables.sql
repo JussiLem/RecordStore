@@ -2,9 +2,11 @@
 DROP TABLE IF EXISTS `artists`;
 CREATE TABLE `artists`
 (
-  `id`   INT AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(100)       NOT NULL,
-  PRIMARY KEY (`id`)
+  `id`       INT AUTO_INCREMENT NOT NULL,
+  `name`     VARCHAR(100)       NOT NULL,
+  `artistId` INT,
+  PRIMARY KEY (`id`),
+  KEY (`artistId`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8mb4;
 
@@ -15,11 +17,10 @@ CREATE TABLE `albums`
   `albumId`  INT AUTO_INCREMENT NOT NULL COMMENT 'albumin tunnus id',
   `name`     VARCHAR(100)       NOT NULL COMMENT 'albumin nimi',
   `artistId` INT,
-  `artist`   VARCHAR(100) COMMENT 'artisti, jolle albumi kuuluu',
   PRIMARY KEY (`albumId`),
   KEY (`name`),
   KEY (`artistId`),
-  CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artistId`) REFERENCES `artists` (`id`) ON DELETE SET NULL
+  CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artistId`) REFERENCES `artists` (`artistId`) ON DELETE SET NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8mb4;
 

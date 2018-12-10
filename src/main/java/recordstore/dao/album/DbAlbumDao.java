@@ -1,6 +1,9 @@
 package recordstore.dao.album;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import recordstore.data.Album;
@@ -121,8 +124,12 @@ public class DbAlbumDao implements AlbumDao {
       statement.setString(2, name);
       Artist albumArtist = album.getArtist();
       Gson gson = new Gson();
-      String albumArtistName = gson.toJson(albumArtist);
-      statement.setObject(3, albumArtistName);
+      JsonParser parser = new JsonParser();
+      JsonObject albumArtistJson = (JsonObject) parser.parse(gson.toJson(albumArtist));
+      int albumArtistId = albumArtistJson.get("id").getAsInt();
+      String albumArtistName = albumArtistJson.get("name").getAsString();
+      statement.setInt(3, albumArtistId);
+
       statement.execute();
       return true;
     } catch (SQLException ex) {
