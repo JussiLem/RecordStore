@@ -16,7 +16,7 @@ https://www.docker.com/products/docker-desktop
 1. Run the initial sql script found in /mariadb/docker-entrypoint-initdb.d folder in local MariaDb client.
 Database should be running on localhost:3306/records. 
 
-2. To build the project type gradlew on cmd:
+2. To build the project go to the root folder of the project and type gradlew on cmd:
 ````bash
 gradlew
 ````
