@@ -15,28 +15,26 @@ import java.sql.SQLException;
 public class ArtistAddServlet extends ArtistServlet {
   private static final Logger LOGGER = LoggerFactory.getLogger(ArtistAddServlet.class);
 
-
-
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
+      int artistId = Integer.parseInt(request.getParameter("artist-id"));
       String artistName = request.getParameter("add-artist");
-      try{
-          createArtist(artistName);
-          request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").forward(request, response);
+      try {
+        createArtist(artistName, artistId);
+        request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").forward(request, response);
       } catch (RecordStoreException e) {
-          request.setAttribute("message", "Artisti on jo olemassa");
+        request.setAttribute("message", "Artisti on jo olemassa");
       }
-
 
     } catch (IOException | ServletException e) {
       LOGGER.error("Servlet post virhe: {}", e);
     }
   }
 
-  private void createArtist(String artistName) {
+  private void createArtist(String artistName, int artistId) {
     try {
-      Artist newArtist = new Artist(artistName);
+      Artist newArtist = new Artist(artistName, artistId);
       dbArtistDao.add(newArtist);
       LOGGER.info("Lisätty artisti: {}", newArtist);
     } catch (SQLException e) {

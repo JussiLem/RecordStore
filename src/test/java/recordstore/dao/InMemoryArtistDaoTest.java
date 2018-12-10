@@ -12,13 +12,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-/**
- * Testaa {@link InMemoryArtistDao}.
- */
+/** Testaa {@link InMemoryArtistDao}. */
 class InMemoryArtistDaoTest {
 
   private InMemoryArtistDao dao;
-  private static final Artist ARTIST = new Artist( "David Bowie");
+  private static final Artist ARTIST = new Artist("David Bowie", 1);
 
   @BeforeEach
   void setUp() {
@@ -26,19 +24,17 @@ class InMemoryArtistDaoTest {
     assertTrue(dao.add(ARTIST));
   }
 
-  /**
-   * Esittää skenaariota, jossa dao operaatioita tehdään ei-olemassa olevalle artistille.
-   */
+  /** Esittää skenaariota, jossa dao operaatioita tehdään ei-olemassa olevalle artistille. */
   @Nested
   class NonExistingArtist {
 
     @Test
-    void addingShouldResultInSuccess()  {
+    void addingShouldResultInSuccess() {
       try (Stream<Artist> allArtists = dao.getAll()) {
         assumeTrue(allArtists.count() == 1);
       }
 
-      final Artist nonExistingArtist = new Artist("Lady Gaga");
+      final Artist nonExistingArtist = new Artist("Lady Gaga", 2);
       boolean result = dao.add(nonExistingArtist);
       assertTrue(result);
 
@@ -48,13 +44,13 @@ class InMemoryArtistDaoTest {
 
     @Test
     void deletionShouldBeFailureAndNotAffectExistingArtists() {
-      final Artist nonExistingArtist = new Artist("Robert Redford");
+      final Artist nonExistingArtist = new Artist("Robert Redford", 2);
       boolean result = dao.delete(nonExistingArtist);
 
       assertFalse(result);
       assertArtistCountIs(1);
     }
-
+/*
     @Test
     void updationShouldBeFailureAndNotAffectExistingArtists() {
       final int nonExistingId = getNonExistingArtistId();
@@ -65,16 +61,14 @@ class InMemoryArtistDaoTest {
       assertFalse(result);
       assertFalse(dao.getById(nonExistingId).isPresent());
     }
-
+*/
     @Test
     void retrieveShouldReturnNoArtist() {
       assertFalse(dao.getById(getNonExistingArtistId()).isPresent());
     }
   }
 
-  /**
-   * Esittää skenaariota, jossa dao operaatiota tehdään jo olemassa olevalle artistille.
-   */
+  /** Esittää skenaariota, jossa dao operaatiota tehdään jo olemassa olevalle artistille. */
   @Nested
   class ExistingArtist {
 
@@ -86,7 +80,7 @@ class InMemoryArtistDaoTest {
       assertArtistCountIs(1);
       assertEquals(ARTIST, dao.getById(ARTIST.getId()).get());
     }
-/*
+    /*
     @Test
     void deletionShouldBeSuccessAndArtistShouldReturnUpdatedInformation() {
       final String newName = "Action Bronson";

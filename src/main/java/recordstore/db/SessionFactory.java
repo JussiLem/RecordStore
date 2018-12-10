@@ -4,12 +4,11 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.sql.DataSource;
 
 public class SessionFactory {
 
@@ -31,6 +30,7 @@ public class SessionFactory {
     config.setUsername(DB_USER);
     config.setPassword(DB_PASS);
     config.setAutoCommit(false);
+    config.setConnectionTestQuery("select 1");
     return new HikariDataSource(config);
   }
 

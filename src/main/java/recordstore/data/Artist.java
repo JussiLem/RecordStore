@@ -1,19 +1,29 @@
 package recordstore.data;
+
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** Artisti POJO edustaa tietoja, jotka luetaan kannasta. */
+/**
+ * Artisti POJO edustaa tietoja, jotka luetaan kannasta.
+ */
 
-public class Artist {
+public class Artist implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private static final AtomicInteger count = new AtomicInteger(0);
-
   private int id;
   private String name;
 
-  /** Luo instanssin artistista */
+  /**
+   * Luo instanssin artistista
+   */
+  public Artist(final String name, int id) {
+    this.name = name;
+    this.id = id;
+  }
+
   public Artist(final String name) {
     this.name = name;
-      boolean isFilled = false;
     id = count.incrementAndGet();
   }
 
@@ -21,8 +31,11 @@ public class Artist {
     this.name = name;
     if (isFilled) {
       id = count.decrementAndGet();
+    } else {
+      id = count.incrementAndGet();
     }
   }
+
   public int getId() {
     return id;
   }
@@ -62,4 +75,5 @@ public class Artist {
   public int hashCode() {
     return getId();
   }
+
 }

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "RecordStoreServlet", urlPatterns = "/")
+@WebServlet(name = "RecordStoreServlet", urlPatterns = "/home")
 public class RecordStoreServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArtistServlet.class);
 
