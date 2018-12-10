@@ -4,9 +4,7 @@ CREATE TABLE `artists`
 (
   `id`       INT AUTO_INCREMENT NOT NULL,
   `name`     VARCHAR(100)       NOT NULL,
-  `artistId` INT,
-  PRIMARY KEY (`id`),
-  KEY (`artistId`)
+  PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8mb4;
 
@@ -14,13 +12,13 @@ CREATE TABLE `artists`
 DROP TABLE IF EXISTS `albums`;
 CREATE TABLE `albums`
 (
-  `albumId`  INT AUTO_INCREMENT NOT NULL COMMENT 'albumin tunnus id',
-  `name`     VARCHAR(100)       NOT NULL COMMENT 'albumin nimi',
-  `artistId` INT,
+  `albumId`    INT AUTO_INCREMENT NOT NULL COMMENT 'albumin tunnus id',
+  `name`       VARCHAR(100)       NOT NULL COMMENT 'albumin nimi',
+  `artistId`   INT,
+  `artistName` VARCHAR(100),
   PRIMARY KEY (`albumId`),
-  KEY (`name`),
-  KEY (`artistId`),
-  CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artistId`) REFERENCES `artists` (`artistId`) ON DELETE SET NULL
+  CONSTRAINT albums_ibfk_1
+  FOREIGN KEY (artistId) REFERENCES `artists` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8mb4;
 

@@ -40,17 +40,17 @@ public class AlbumAddServlet extends AlbumServlet {
 
       resp.setCharacterEncoding("UTF-8");
 
-      Artist artist = new Artist(artistName, albumId);
+      Artist artist = new Artist(artistName);
       Album album = new Album(albumId, albumName, artist);
       try {
         dbAlbumDao.add(album);
         LOGGER.info("Lisätty albumi: {}", album);
       } catch (SQLException e) {
-        throw new RecordStoreException("Albumin lisäys epäonnistui", e);
+        LOGGER.error("Albumin lisäys epäonnistui: {}", e.getMessage());
       }
 
     } catch (NumberFormatException | UnsupportedEncodingException | RecordStoreException e) {
-      LOGGER.error("Poikkeus albumin luonnissa", e);
+      LOGGER.error("Poikkeus albumin luonnissa, {}", e);
     }
 
   }

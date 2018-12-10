@@ -118,7 +118,7 @@ public class DbAlbumDao implements AlbumDao {
   private boolean getAlbumStatement(Album album, int id) {
     try (Connection connection = getConnection();
         PreparedStatement statement =
-            connection.prepareStatement("INSERT INTO albums VALUES (?,?,?)")) {
+            connection.prepareStatement("INSERT INTO albums VALUES (?,?,?,?)")) {
       statement.setLong(1, id);
       String name = album.getName();
       statement.setString(2, name);

@@ -18,9 +18,10 @@ public class ArtistAddServlet extends ArtistServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
+      int artistId = Integer.parseInt(request.getParameter("artist-id"));
       String artistName = request.getParameter("add-artist");
       try {
-        createArtist(artistName);
+        createArtist(artistName, artistId);
         request.getRequestDispatcher("/WEB-INF/views/artist/artist.jsp").forward(request, response);
       } catch (RecordStoreException e) {
         request.setAttribute("message", "Artisti on jo olemassa");
@@ -31,9 +32,9 @@ public class ArtistAddServlet extends ArtistServlet {
     }
   }
 
-  private void createArtist(String artistName) {
+  private void createArtist(String artistName, int artistId) {
     try {
-      Artist newArtist = new Artist(artistName, false);
+      Artist newArtist = new Artist(artistName, artistId);
       dbArtistDao.add(newArtist);
       LOGGER.info("Lisätty artisti: {}", newArtist);
     } catch (SQLException e) {

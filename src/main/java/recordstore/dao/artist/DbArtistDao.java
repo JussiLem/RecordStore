@@ -82,14 +82,10 @@ public class DbArtistDao implements ArtistDao {
     }
   }
 
-  private Artist createArtist(ResultSet resultSet) {
-    Artist artist;
-    try {
-      artist = new Artist(resultSet.getString("name"));
-    } catch (SQLException e) {
-      throw new RecordStoreException("Artisti on jo olemassa");
-    }
-    return artist;
+  private Artist createArtist(ResultSet resultSet) throws SQLException {
+
+    return new Artist(resultSet.getString("name"),
+            resultSet.getInt("id"));
   }
 
   /** {@inheritDoc} */

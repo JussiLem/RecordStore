@@ -24,12 +24,15 @@ public class Artist implements Serializable {
 
   public Artist(final String name) {
     this.name = name;
+    id = count.incrementAndGet();
   }
 
   public Artist(String name, boolean isFilled) {
     this.name = name;
     if (isFilled) {
       id = count.decrementAndGet();
+    } else {
+      id = count.incrementAndGet();
     }
   }
 
