@@ -27,7 +27,7 @@ This will download all the implementations, run the unit tests and create the .w
 3. Copy the .war file created in build/lib folder to tomcat's webapp folder. 
 This will automatically start the RecordStore app.
 
-4. GOTO address: http://localhost/8080/home
+4. GOTO address: http://localhost/RecordStore-1.0/8080/home
 
 ## Alternative Docker instructions
 RecordStore can also be run with docker by using these instructions:
@@ -41,7 +41,7 @@ docker-compose up
 This will create database and the application in a few minutes.
 
 4. Go to address:
-http://localhost:8080/home
+http://localhost:8080/RecordStore-1.0/home
 
 5. To stop the containers press **CTRL+C**
 
