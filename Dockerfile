@@ -15,4 +15,4 @@ RUN apt-get -q update
 RUN rm -r /$CATALINA_HOME/webapps*
 RUN chmod +x ./wait-for-it.sh
 COPY --from=compile /RecordStore-training/build/libs/* /$CATALINA_HOME/webapps/
-CMD ["./wait-for-it.sh", "--strict", "--timeout=40", "recordstoredb:3306", "--", "catalina.sh", "run"]
+CMD ["./wait-for-it.sh", "--strict", "--timeout=60", "recordstoredb:3306", "--", "catalina.sh", "run"]
