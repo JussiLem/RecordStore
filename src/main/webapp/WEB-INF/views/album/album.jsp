@@ -5,6 +5,7 @@
     <title>Record Store - Albums</title>
 </head>
 <body>
+<h1>Album view</h1>
 <jsp:include page="albumAdd.jsp"/>
 <jsp:include page="albumList.jsp"/>
 </body>

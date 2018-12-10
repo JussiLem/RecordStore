@@ -52,7 +52,11 @@ Sometimes the database might not be ready before wait-for-it script timer runs o
 This will make the recordstore tomcat to timeout and exit. 
 If this occurs, just press **ctrl+c** and run ````docker-compose up```` again.
 
-
-
 ### Database details
 Database connection details can be found from main/resources/application.conf
+
+
+## Issues
+* Listing albums don't work
+* Deleting artist don't work
+* all the links don't work properly

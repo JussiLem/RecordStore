@@ -6,6 +6,7 @@
     <title>RecordStore - Artists</title>
 </head>
 <body>
+<h1>Artist view</h1>
 <jsp:include page="artistList.jsp"/>
 <jsp:include page="artistAdd.jsp"/>
 
