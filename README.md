@@ -53,10 +53,11 @@ This will make the recordstore tomcat to timeout and exit.
 If this occurs, just press **ctrl+c** and run ````docker-compose up```` again.
 
 ### Database details
-Database connection details can be found from main/resources/application.conf
+Database connection details can be found from src/main/resources/application.conf
 
 
 ## Issues
+* Missing track servlets
 * Listing albums don't work
 * Deleting artist don't work
 * all the links don't work properly
